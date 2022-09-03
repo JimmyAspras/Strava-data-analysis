@@ -8,57 +8,49 @@ This analysis uses my personal Strava data from all rides from start to Dec 2021
 ## SQL Analysis
 
 ### How many rides were completed by each bike? Sort in descending order of count
-
+```
 SELECT bike_id, COUNT(id) as "Number of Rides by Bike"
-
 FROM strava
-
 GROUP BY bike_id
-
 ORDER BY "Number of Rides by Bike" DESC;
+```
 
 <img width="584" alt="image" src="https://user-images.githubusercontent.com/72087263/188246111-b890c749-e599-4402-b854-d0cd11821f05.png">
 
 Most rides have taken place with bike 3996174 (Cannondale CAAD10), followed by 4226605 (Salsa Mukluk), 3996178 (Titanium Litespeed), and 3996175 (Cannondale Trail MTB). 8 rides have been done using unnamed bikes.
 
 ### Display min and max suffer score by bike
-
+```
 SELECT bike_id, MIN(suffer_score), MAX(suffer_score)
-
 FROM strava
-
 WHERE suffer_score>0
-
 GROUP BY bike_id;
+```
 
 <img width="523" alt="image" src="https://user-images.githubusercontent.com/72087263/188247319-f2e4e027-883f-4593-87a9-29059ea05349.png">
 
 This output gives a range of suffer scores, which in itself doesn’t reveal much. However, it shows that there could be an outlier for bike 3996174.
 
 ### Display the average suffer score by bike in descending order to see if there is a difference
-
+```
 SELECT bike_id, AVG(suffer_score) as "Average Suffer Score"
 FROM strava
-
 GROUP BY bike_id
-
 HAVING AVG(suffer_score)>0
-
 ORDER BY "Average Suffer Score" DESC;
+```
 
 <img width="540" alt="image" src="https://user-images.githubusercontent.com/72087263/188247386-f90649f1-d264-435b-b54b-adce5fce604a.png">
 
 The average suffer score reveals somewhat more information. The CAAD10 has the highest average suffer score, followed by the Litespeed. These are both road bikes and compare to somewhat lower average suffer scores of 74 and 60.6 for my Mukluk and Trail bikes, respectively. This indicates that the road bikes generally have higher suffer scores and warrants further examination.
 
 ### Which day of the week is a ride most likely to take place?
-
+```
 SELECT start_day, COUNT(start_day) AS "Number of Rides by Day"
-
 FROM strava
-
 GROUP BY start_day
-
 ORDER BY "Number of Rides by Day" DESC;
+```
 
 <img width="610" alt="image" src="https://user-images.githubusercontent.com/72087263/188247445-73f69c9a-dbf7-48a8-afec-d38d343c023b.png">
 
@@ -105,7 +97,7 @@ Data was imported to R and filtered down to numeric data and calculated variable
 <img width="476" alt="image" src="https://user-images.githubusercontent.com/72087263/188253127-de258bd6-3878-454b-b7f4-54b61e86de56.png">
 
 ## R Code
-
+```
 #Instructions for downloading Strava data
 #https://scottpdawson.com/export-strava-workout-data/
 #https://gist.github.com/scottpdawson/74f85f60a7cf7fcc8ee527592dadf498
@@ -165,4 +157,4 @@ library(broom)
 bikemod2<-tidy(bikemod)
 bikemod2
 glance(bikemod)
-
+```
